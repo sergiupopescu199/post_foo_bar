@@ -62,8 +62,13 @@ async fn main() -> Result<()> {
     let data = JsonRes::default();
     // create a client instance
     let client = Client::new();
-    // send data as POST request to the enpoint, it automaticly infers the application/json header
-    let response = client.post(POST_URL).json(&data).send().await?;
+    // send data as POST request to the enpoint, it automaticly infers the "Content-Type: application/json" header
+    let response = client
+        .post(POST_URL)
+        // .header("Content-Type", "application/json")
+        .json(&data)
+        .send()
+        .await?;
     // parse the response as json into the general api response struct
     let api_res = response.json::<ApiResponse>().await?;
     // print headers struct
